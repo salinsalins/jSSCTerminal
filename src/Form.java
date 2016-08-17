@@ -660,13 +660,15 @@ public class Form extends javax.swing.JPanel {
                 int d1 = Character.digit(str.charAt(i++), 16);
                 if (d1 < 0) continue;
                 int d2 = Character.digit(str.charAt(i++), 16);
-                if (d2 >= 0) {
-                    data[j++] = (byte) ((d1 << 4) + d2);
-                }
+                if (d2 < 0) continue;
+                data[j++] = (byte) ((d1 << 4) + d2);
             }        
+            if (j <= 0) {
+                jTextFieldOut.setText("");
+                return;
+            }
             byte[] data1 = new byte[j];
-            for (int k = 0; k < j; k++) 
-                data1[k]=data[k];
+            System.arraycopy(data, 0, data1, 0, j);
             try {
                 serialPort.writeBytes(data1);
                 jTextFieldOut.setText("");
@@ -675,7 +677,6 @@ public class Form extends javax.swing.JPanel {
                 DialogMessage dialogMessage = new DialogMessage(this, DialogMessage.TYPE_ERROR, "Writing data", "Error occurred while writing data.");
             }
         }
-        jTextFieldOut.setText("");
     }
 
     private void jButtonSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSettingsActionPerformed

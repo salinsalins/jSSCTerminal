@@ -650,16 +650,33 @@ public class Form extends javax.swing.JPanel {
     }//GEN-LAST:event_jButtonSendActionPerformed
 
     private void jButtonSendHEXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendHEXActionPerformed
-        setControlsFocusable(false);
-        GlassPane glassPane = new GlassPane();
-        DialogHEX dialog = new DialogHEX(this, serialPort);
-        glassPane.add(dialog);
-        int x = (getWidth()/2) - dialog.getWidth()/2;
-        int y = (getHeight()/2) - dialog.getHeight()/2;
-        dialog.setBounds(x, y, dialog.getWidth(), dialog.getHeight());
-        Main.getApplet().setGlassPane(glassPane);
-        glassPane.setVisible(true);
-    }//GEN-LAST:event_jButtonSendHEXActionPerformed
+        String str = jTextFieldOut.getText();
+        if(str.length() > 1){
+            int len = str.length();
+            byte[] data = new byte[len / 2];
+            int i = 0;
+            int j = 0;
+            for (; i < len;) {
+                int d1 = Character.digit(str.charAt(i++), 16);
+                if (d1 < 0) continue;
+                int d2 = Character.digit(str.charAt(i++), 16);
+                if (d2 >= 0) {
+                    data[j++] = (byte) ((d1 << 4) + d2);
+                }
+            }        
+            byte[] data1 = new byte[j];
+            for (int k = 0; k < j; k++) 
+                data1[k]=data[k];
+            try {
+                serialPort.writeBytes(data1);
+                jTextFieldOut.setText("");
+            }
+            catch (Exception ex) {
+                DialogMessage dialogMessage = new DialogMessage(this, DialogMessage.TYPE_ERROR, "Writing data", "Error occurred while writing data.");
+            }
+        }
+        jTextFieldOut.setText("");
+    }
 
     private void jButtonSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSettingsActionPerformed
         DialogSettings dialogSettings = new DialogSettings(this, portName, baudRate, dataBits, stopBits, parity);

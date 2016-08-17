@@ -44,7 +44,7 @@ public class jSSCTerminal extends WindowAdapter {
     private void initialize() {
         frame = new JFrame();
         frame.setBounds(100, 100, 600, 600);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.addWindowListener(this);
         frame.getContentPane().setLayout(new CardLayout(0, 0));
         frame.add(new Form());

@@ -639,6 +639,7 @@ public class Form extends javax.swing.JPanel {
     private void jToggleButtonDTRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButtonDTRActionPerformed
         try {
             serialPort.setDTR(jToggleButtonDTR.isSelected());
+            System.out.println(jToggleButtonDTR.isSelected());
         }
         catch (Exception ex) {
             DialogMessage dialogMessage = new DialogMessage(this, DialogMessage.TYPE_ERROR, "Changing DTR state", "Error occurred while changing DTR state.");
